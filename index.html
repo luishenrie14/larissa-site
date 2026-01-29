@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Larissa 💖</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f1a;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fade 1.5s ease;
+  }
+
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .card {
+    background: #1c1c2b;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 340px;
+    box-shadow: 0 0 30px rgba(255,77,109,0.4);
+    z-index: 2;
+  }
+
+  h1 {
+    color: #ff4d6d;
+    margin-bottom: 10px;
+  }
+
+  .contador {
+    margin: 15px 0;
+    font-size: 17px;
+  }
+
+  .frase {
+    font-size: 16px;
+    margin: 15px 0;
+    min-height: 60px;
+    transition: opacity 0.5s;
+  }
+
+  button {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+
+  button:hover {
+    background: #e63b5f;
+  }
+
+  .heart {
+    position: fixed;
+    bottom: -10px;
+    animation: subir 6s linear infinite;
+    color: #ff4d6d;
+  }
+
+  @keyframes subir {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h1>Larissa 💖</h1>
+
+  <p class="contador" id="contador"></p>
+
+  <p class="frase" id="frase"></p>
+
+  <button onclick="toggleMusica()" id="botaoMusica">▶️ Dar play, amor</button>
+</div>
+
+<!-- 🎵 MÚSICA LOCAL -->
+<audio id="musica" preload="auto">
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // 🎵 PLAY / PAUSE + vibração
+  const musica = document.getElementById("musica");
+  const botao = document.getElementById("botaoMusica");
+
+  function toggleMusica() {
+    if (navigator.vibrate) navigator.vibrate(50);
+
+    if (musica.paused) {
+      musica.play();
+      botao.innerText = "⏸️ Pausar música";
+    } else {
+      musica.pause();
+      botao.innerText = "▶️ Dar play, amor";
+    }
+  }
+
+  // 📅 CONTADOR DE DIAS
+  const dataInicio = new Date("2025-12-14");
+  const hoje = new Date();
+  const diff = hoje - dataInicio;
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  document.getElementById("contador").innerText =
+    dias >= 0
+      ? `Já se passaram ${dias} dias desde o começo do nosso para sempre`
+      : `Faltam ${Math.abs(dias)} dias para o nosso primeiro episódio`;
+
+  // 💬 FRASES AUTOMÁTICAS (SEM "EU TE AMO / AMAR")
+  const frases = [
+    "Não sou coreano, mas quero viver nosso dorama",
+    "Você deixa qualquer dia comum melhor.",
+    "Meu lugar favorito é onde você está.",
+    "A vida ficou mais interessante desde que você chegou.",
+    "Você tem um jeito único de melhorar tudo.",
+    "Se isso fosse uma série, eu não pularia nenhum episódio.",
+    "Entre bilhões de pessoas, foi você.",
+    "Tem dias que tudo que preciso é pensar em você.",
+    "A melhor coincidência que já me aconteceu.",
+    "Você faz o simples virar especial."
+  ];
+
+  // 💌 FRASE SECRETA APÓS 30 DIAS
+  if (dias >= 30) {
+    frases.push("Algumas histórias só fazem sentido depois de um tempo.");
+  }
+
+  let indice = 0;
+  const fraseEl = document.getElementById("frase");
+
+  function trocarFrase() {
+    fraseEl.style.opacity = 0;
+    setTimeout(() => {
+      fraseEl.innerText = frases[indice];
+      fraseEl.style.opacity = 1;
+      indice = (indice + 1) % frases.length;
+    }, 500);
+  }
+
+  trocarFrase();
+  setInterval(trocarFrase, 5000);
+
+  // ❤️ CORAÇÕES (mais suaves)
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (16 + Math.random() * 24) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+  }, 700);
+</script>
+
+</body>
+</html>
