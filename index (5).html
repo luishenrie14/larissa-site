@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Larissa</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f0f1a;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* TELAS */
+.tela {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, #0f0f1a, #1c1c2b);
+  z-index: 10;
+}
+
+h1 {
+  color: #ff4d6d;
+}
+
+p {
+  color: #ccc;
+  font-size: 16px;
+  max-width: 320px;
+}
+
+button {
+  background: #ff4d6d;
+  color: white;
+  border: none;
+  padding: 16px 30px;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 25px;
+}
+
+button:hover {
+  background: #e63b5f;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.card {
+  background: #1c1c2b;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 340px;
+  box-shadow: 0 0 30px rgba(255,77,109,0.4);
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.contador {
+  margin: 15px 0;
+  font-size: 16px;
+}
+
+.frase {
+  font-size: 16px;
+  margin: 15px 0;
+  min-height: 60px;
+  transition: opacity 0.5s;
+}
+
+/* CORAÇÕES */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  animation: subir 6s linear infinite;
+  color: #ff4d6d;
+}
+
+@keyframes subir {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🌙 TELA DE ABERTURA -->
+<div class="tela" id="abertura">
+  <h1>Larissa ✨</h1>
+  <p>Um pequeno lugar feito só para você</p>
+  <button onclick="irParaCapitulo()">Entrar</button>
+</div>
+
+<!-- 🎬 CAPÍTULO 1 -->
+<div class="tela" id="capitulo" style="display:none;">
+  <h1>Capítulo 1</h1>
+  <p><strong>O começo do nosso pra sempre</strong></p>
+  <button onclick="entrarSite()">Começar 🎬</button>
+</div>
+
+<!-- 💖 CONTEÚDO PRINCIPAL -->
+<div class="card" id="conteudo" style="display:none;">
+  <h1>Larissa 💖</h1>
+
+  <p class="contador" id="contador"></p>
+
+  <p class="frase" id="frase"></p>
+
+  <button onclick="toggleMusica()" id="botaoMusica">⏸️ Pausar música</button>
+  <br><br>
+  <button onclick="irParaFinal()">Encerrar capítulo</button>
+</div>
+
+<!-- 🌌 TELA FINAL -->
+<div class="tela" id="final" style="display:none;">
+  <h1>Continua…</h1>
+  <p>Essa história ainda tem muitos episódios.</p>
+  <button onclick="voltarInicio()">Recomeçar ▶️</button>
+</div>
+
+<audio id="musica" preload="auto">
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const musica = document.getElementById("musica");
+const botao = document.getElementById("botaoMusica");
+
+/* TELAS */
+function irParaCapitulo() {
+  document.getElementById("abertura").style.display = "none";
+  document.getElementById("capitulo").style.display = "flex";
+}
+
+function entrarSite() {
+  document.getElementById("capitulo").style.display = "none";
+  document.getElementById("conteudo").style.display = "block";
+  musica.play();
+}
+
+function irParaFinal() {
+  document.getElementById("conteudo").style.display = "none";
+  document.getElementById("final").style.display = "flex";
+  musica.pause();
+}
+
+function voltarInicio() {
+  document.getElementById("final").style.display = "none";
+  document.getElementById("abertura").style.display = "flex";
+}
+
+/* MÚSICA */
+function toggleMusica() {
+  if (musica.paused) {
+    musica.play();
+    botao.innerText = "⏸️ Pausar música";
+  } else {
+    musica.pause();
+    botao.innerText = "▶️ Dar play";
+  }
+}
+
+/* CONTADOR */
+const dataInicio = new Date("2025-12-14");
+const hoje = new Date();
+const diff = hoje - dataInicio;
+const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+document.getElementById("contador").innerText =
+  dias >= 0
+    ? `Já se passaram ${dias} dias desde o começo do nosso dorama 🎬`
+    : `Faltam ${Math.abs(dias)} dias para o primeiro episódio 💫`;
+
+/* FRASES */
+const frases = [
+  "Não sou coreano, mas quero viver nosso dorama 🎬",
+  "Você deixa tudo mais interessante.",
+  "Meu lugar favorito é onde você está.",
+  "Entre bilhões de pessoas, foi você.",
+  "A vida ficou mais leve desde que você chegou.",
+  "Se isso fosse uma série, eu assistiria sem pular.",
+  "Você transforma dias comuns em algo especial.",
+  "Algumas histórias começam sem aviso.",
+  "Tem coisas que simplesmente fazem sentido.",
+  "A melhor coincidência que já me aconteceu."
+];
+
+let i = 0;
+const fraseEl = document.getElementById("frase");
+
+function trocarFrase() {
+  fraseEl.style.opacity = 0;
+  setTimeout(() => {
+    fraseEl.innerText = frases[i];
+    fraseEl.style.opacity = 1;
+    i = (i + 1) % frases.length;
+  }, 500);
+}
+
+trocarFrase();
+setInterval(trocarFrase, 5000);
+
+/* CORAÇÕES */
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (16 + Math.random() * 24) + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 400);
+</script>
+
+</body>
+</html>
+
